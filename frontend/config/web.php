@@ -3,6 +3,7 @@ $config = [
     'homeUrl'=>Yii::getAlias('@frontendUrl'),
     'controllerNamespace' => 'frontend\controllers',
     'defaultRoute' => 'site/index',
+
     'modules' => [
         'user' => [
             'class' => 'frontend\modules\user\Module'

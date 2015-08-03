@@ -32,11 +32,17 @@ $this->beginContent('@frontend/views/layouts/_clear.php')
                             'options' => ['class' => 'nav navbar-nav navbar-right navigate-section'],
                             'items' => [
                                 ['label' => Yii::t('frontend', 'Home'), 'url' => ['/site/index']],
-                                ['label' => Yii::t('frontend', 'About'), 'url' => ['/page/view', 'slug'=>'about']],
-                                ['label' => Yii::t('frontend', 'Articles'), 'url' => ['/article/index']],
+                                [
+                                            'label' => Yii::t('frontend', 'Research'),
+                                            'url' => ['research/index'],
+                                            'visible'=>!Yii::$app->user->isGuest
+                                ],
+                                // ['label' => Yii::t('frontend', 'About'), 'url' => ['/page/view', 'slug'=>'about']],
+                                ['label' => Yii::t('frontend', 'News'), 'url' => ['/article/index']],
                                 ['label' => Yii::t('frontend', 'Contact'), 'url' => '#contact-section'],
                                 ['label' => Yii::t('frontend', 'Signup'), 'url' => ['/user/sign-in/signup'], 'visible'=>Yii::$app->user->isGuest],
                                 ['label' => Yii::t('frontend', 'Login'), 'url' => ['/user/sign-in/login'], 'visible'=>Yii::$app->user->isGuest],
+
                                 [
                                             'label' => Yii::t('frontend', 'Logout'),
                                             'url' => ['/user/sign-in/logout'],
@@ -63,26 +69,26 @@ $this->beginContent('@frontend/views/layouts/_clear.php')
                                 //         ]
                                 //     ]
                                 // ],
-                                ,
-                                [
-                                    'label'=>Yii::t('frontend', 'Language'),
-                                    'items'=>array_map(function ($code) {
-                                        return [
-                                            'label' => Yii::$app->params['availableLocales'][$code],
-                                            'url' => ['/site/set-locale', 'locale'=>$code],
-                                            'active' => Yii::$app->language === $code
-                                        ];
-                                    }, array_keys(Yii::$app->params['availableLocales']))
-                                ]
+                                // ,
+                                // [
+                                //     'label'=>Yii::t('frontend', 'Language'),
+                                //     'items'=>array_map(function ($code) {
+                                //         return [
+                                //             'label' => Yii::$app->params['availableLocales'][$code],
+                                //             'url' => ['/site/set-locale', 'locale'=>$code],
+                                //             'active' => Yii::$app->language === $code
+                                //         ];
+                                //     }, array_keys(Yii::$app->params['availableLocales']))
+                                // ]
                             ]
                         ]); ?>
-                        
+
                     </div><!-- /.navbar-collapse -->
                 </div><!-- /.container-fluid -->
             </nav>
         </header>
         <!-- End Header -->
-    
+
     <?php echo $content ?>
 
     <footer>

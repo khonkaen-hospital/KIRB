@@ -69,7 +69,7 @@ class Research extends \yii\db\ActiveRecord
             [['fund_description'], 'string', 'max' => 256],
             [['kecode'], 'unique']
 
-           
+
         ];
     }
 
@@ -177,6 +177,30 @@ class Research extends \yii\db\ActiveRecord
 
     public function getSubmissionStatusLabel(){
         return Research::getItemAilas($this->submission_status);
+    }
+
+    public function getSubmisstionStatusEdit()
+    {
+      $items = [self::SUBMISSION_STATUS_DRAFT,self::SUBMISSION_STATUS_REJECT];
+      return in_array($this->submission_status, $items) ? TRUE : FALSE;
+    }
+
+    public function getSubmissionStatusColor()
+    {
+      $color = '';
+      if($this->submission_status === self::SUBMISSION_STATUS_SUBMIT ){
+        $color = 'label-info';
+      } elseif($this->submission_status === self::SUBMISSION_STATUS_REJECT ){
+        $color = 'label-danger';
+      } elseif($this->submission_status === self::SUBMISSION_STATUS_APPROVE ){
+        $color = 'label-primary';
+      } elseif($this->submission_status === self::SUBMISSION_STATUS_SUCCESS ){
+        $color = 'label-success';
+      }else{
+        $color = 'label-default';
+      }
+
+      return $color;
     }
 
 

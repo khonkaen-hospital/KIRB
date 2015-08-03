@@ -4,10 +4,9 @@ $config = [
     'vendorPath'=>dirname(dirname(__DIR__)).'/vendor',
     'extensions' => require(__DIR__ . '/../../vendor/yiisoft/extensions.php'),
     'sourceLanguage'=>'en-US',
-    'language'=>'th',
+    'language'=>'th-TH',
     'bootstrap' => ['log'],
     'components' => [
-
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
             'itemTable' => '{{%rbac_auth_item}}',
@@ -147,7 +146,7 @@ $config = [
         'adminEmail' => getenv('ADMIN_EMAIL'),
         'robotEmail' => getenv('ROBOT_EMAIL'),
         'availableLocales'=>[
-            'th'=>'Thailand (TH)',
+            'th-TH'=>'ไทย (TH)',
             'en-US'=>'English (US)'
         ],
     ],

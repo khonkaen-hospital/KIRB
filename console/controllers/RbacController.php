@@ -3,6 +3,7 @@ namespace console\controllers;
 
 use common\models\User;
 use common\rbac\OwnModelRule;
+use common\rbac\SubmissionRule;
 use Yii;
 use yii\console\Controller;
 use yii\helpers\Console;
@@ -20,6 +21,17 @@ class RbacController extends Controller
         // own model rule
         $ownModelRule = new OwnModelRule();
         $auth->add($ownModelRule);
+
+        $submissionRule = new SubmissionRule();
+        $auth->add($submissionRule);
+
+        $updateOwnResearch = $auth->createPermission('updateOwnResearch');
+        $updateOwnResearch->description = 'update research by status';
+        $updateOwnResearch->ruleName = $submissionRule->name;
+        $auth->add($updateOwnResearch);
+        
+        $auth->addChild($user, $updateOwnResearch);
+
 
         $manager = $auth->createRole(User::ROLE_MANAGER);
         $auth->add($manager);

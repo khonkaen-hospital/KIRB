@@ -49,7 +49,8 @@
     "bower-asset/flot": "^0.8",
     "rmrevin/yii2-fontawesome": "2.10.1",
     "kartik-v/yii2-widget-fileinput": "*",
-    "kartik-v/yii2-widget-growl": "*"
+    "kartik-v/yii2-widget-growl": "*",
+    "dixonsatit/yii2-thai-year-formatter": "*"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "^2.0.0",

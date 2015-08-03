@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use common\models\Research;
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\models\search\ResearchSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -40,12 +41,13 @@ $this->params['breadcrumbs'][] = strip_tags($this->title);
             ],
             'created_at:dateTime',
             'submit_at:dateTime',
+
             [
                 'attribute'=>'submissionStatusLabel',
                 'options'=>['style'=>'width:100px;'],
-                'format'=>'html',
+                'format'=>'raw',
                 'value'=>function($model){
-                    return $model->submissionStatusLabel==='Draft'?'<span style="color:#DB5F5F;">'.$model->submissionStatusLabel.'</span>':$model->submissionStatusLabel;
+                    return '<span style="display: block;line-height:20px;" class="label '.$model->submissionStatusColor.'" >'.$model->submissionStatusLabel.'</span>';
                 },
                 'contentOptions'=>['class'=>'text-center','style'=>'font-weight:bold;']
             ],
@@ -57,13 +59,29 @@ $this->params['breadcrumbs'][] = strip_tags($this->title);
             // 'update_date',
             // 'type_id',
             // 'category_id',
-
             [
                 'class' => 'yii\grid\ActionColumn',
                 'options'=>['style'=>'width:120px;'],
                 'buttonOptions'=>['class'=>'btn btn-default'],
-                'template'=>'<div class="btn-group btn-group-sm text-center" role="group"> {view} {update} {delete} </div>'
-         ], ],
+                'template'=>'<div class="btn-group btn-group-sm text-center" role="group"> {view} {update} {delete} </div>',
+                'buttons'=> [
+                  'update'=> function($url, $model, $key){
+                      return $model->SubmisstionStatusEdit ? Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, ['class'=>'btn btn-default']) : null;
+                  },
+                  'delete'=> function($url, $model, $key){
+                    $options = [
+                      'title' => Yii::t('yii', 'Delete'),
+                      'aria-label' => Yii::t('yii', 'Delete'),
+                      'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+                      'data-method' => 'post',
+                      'data-pjax' => '0',
+                      'class'=>'btn btn-default'
+                    ];
+                      return $model->SubmisstionStatusEdit ? Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, $options) : null;
+                  }
+                ]
+            ],
+       ],
     ]); ?>
 
 </div>

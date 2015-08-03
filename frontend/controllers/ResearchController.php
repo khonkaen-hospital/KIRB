@@ -16,7 +16,10 @@ use Intervention\Image\ImageManagerStatic;
 use trntv\filekit\actions\DeleteAction;
 use trntv\filekit\actions\UploadAction;
 use yii\helpers\Html;
+use yii\filters\AccessControl;
+use yii\web\ForbiddenHttpException;
 
+use common\models\ResearchLog;
 /**
  * ResearchController implements the CRUD actions for Research model.
  */
@@ -31,6 +34,15 @@ class ResearchController extends Controller
                     'delete' => ['post'],
                 ],
             ],
+            'access'=>[
+                'class'=>AccessControl::className(),
+                'rules'=>[
+                  [
+                    'allow'=>true,
+                    'roles'=>['@']
+                  ]
+                ]
+            ]
         ];
     }
 
@@ -77,7 +89,7 @@ class ResearchController extends Controller
      * @return mixed
      */
     public function actionView($id)
-    {   
+    {
         $model = $this->findModel($id);
         return $this->render('view', [
             'model' => $model,
@@ -98,6 +110,7 @@ class ResearchController extends Controller
         ]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $this->addLog($model->id,serialize($model->attributes),'create','Create Record');
             return $this->redirect(['attach-files', 'research_id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -114,15 +127,18 @@ class ResearchController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-             return $this->redirect(['attach-files', 'research_id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
+        $model = $this->findModel($id);
+        $this->checkAccess($model);
+
+          if ($model->load(Yii::$app->request->post()) && $model->save()) {
+               $this->addLog($model->id,serialize($model->attributes),'update','Update Record');
+               return $this->redirect(['attach-files', 'research_id' => $model->id]);
+          } else {
+              return $this->render('update', [
+                  'model' => $model,
+              ]);
+          }
     }
 
     /**
@@ -134,6 +150,7 @@ class ResearchController extends Controller
     public function actionDelete($id)
     {
         if (($model = Research::find()->byDraft($id)->one()) !== null) {
+           $this->addLog($model->id,serialize($model->attributes),'delete','Delete Record');
            $model->delete();
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -172,11 +189,16 @@ class ResearchController extends Controller
     public function actionAttachFiles($research_id){
 
         $documents = $this->findDocuments($research_id);
+        $model = $this->findModel($research_id);
+        $this->checkAccess($model);
 
         if (Model::loadMultiple($documents, Yii::$app->request->post()) && Model::validateMultiple($documents)) {
             foreach ($documents as $document) {
-                $document->save(false); 
+
+                $document->save(false);
             }
+            $this->addLog($research_id,serialize($documents),'attachfile','Attach file');
+
             return $this->redirect(['view', 'id' => $research_id]);
         }
 
@@ -191,7 +213,7 @@ class ResearchController extends Controller
 
         $documentTypes = DocumentType::find()->all();
 
-        foreach ($documentTypes as $doc) { 
+        foreach ($documentTypes as $doc) {
            $model = Yii::createObject([
                 'class' => Document::className(),
                 'research_id' => $research_id,
@@ -213,18 +235,34 @@ class ResearchController extends Controller
             $model->submission_status = Research::SUBMISSION_STATUS_SUBMIT;
             $model->submit_at = time();
             if($model->save()){
+                $this->addLog($research_id,serialize($model->attributes),'submit','Submition file');
                 Yii::$app->getSession()->setFlash('alert',[
                 'body'=>'ลงทะเบียนงานวิจัยเสร็จเรียบร้อย! เจ้าหน้าที่จะติดต่อกลับไปเร็วที่สุด..',
                 'options'=>['class'=>'alert-success']
                 ]);
-                return $this->redirect(['index']); 
+                return $this->redirect(['index']);
             }else{
                 return $this->refersh();
-            }        
+            }
         }
 
         return $this->render('submission',[
             'model' => $model
         ]);
+    }
+
+    public function checkAccess(Research $model){
+      if (!Yii::$app->user->can('updateOwnResearch', ['research' => $model])) {
+        throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+      }
+    }
+
+    public function addLog($research_id,$data,$type,$message=''){
+      $model = new ResearchLog;
+      $model->research_id = $research_id;
+      $model->message = $message;
+      $model->data = $data;
+      $model->type = $type;
+      $model->save();
     }
 }
