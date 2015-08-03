@@ -62,7 +62,7 @@ $this->title = Yii::$app->name;
                             </div>
 
                             <!-- LAYER NR. 4 -->
-                            <div class="tp-caption lfb tp-resizeme rs-parallaxlevel-0"
+                            <!-- <div class="tp-caption lfb tp-resizeme rs-parallaxlevel-0"
                                 data-x="400"
                                 data-y="510"
                                 data-customin="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0;scaleY:0;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
@@ -75,7 +75,7 @@ $this->title = Yii::$app->name;
                                 data-endelementdelay="0.1"
                                 data-linktoslide="next"
                                 style="z-index: 10; max-width: auto; max-height: auto; white-space: nowrap;"><a href='#' class='trans-btn'>ลงทะเบียน</a>
-                            </div>
+                            </div> -->
 
                         </li>
 

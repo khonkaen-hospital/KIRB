@@ -185,7 +185,6 @@ class ResearchController extends Controller
         }
     }
 
-
     public function actionAttachFiles($research_id){
 
         $documents = $this->findDocuments($research_id);
