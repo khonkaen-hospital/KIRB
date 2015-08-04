@@ -58,7 +58,7 @@ $this->title = Yii::$app->name;
                                 data-splitout="none"
                                 data-elementdelay="0.1"
                                 data-endelementdelay="0.1"
-                                style="z-index: 7; max-width: auto; max-height: auto; white-space: nowrap;">ลงทะเบียน Submission 
+                                style="z-index: 7; max-width: auto; max-height: auto; white-space: nowrap;">ลงทะเบียน Submission ได้ง่ายๆ
                             </div>
 
 
