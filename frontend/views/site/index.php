@@ -58,10 +58,10 @@ $this->title = Yii::$app->name;
                                 data-splitout="none"
                                 data-elementdelay="0.1"
                                 data-endelementdelay="0.1"
-                                style="z-index: 7; max-width: auto; max-height: auto; white-space: nowrap;">ลงทะเบียน Submission ได้ง่ายๆ
+                                style="z-index: 7; max-width: auto; max-height: auto; white-space: nowrap;">ลงทะเบียน Submission 
                             </div>
 
-                            
+
 
                             <!-- LAYER NR. 4 -->
                             <!-- <div class="tp-caption lfb tp-resizeme rs-parallaxlevel-0"
